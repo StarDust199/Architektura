@@ -31,6 +31,9 @@ final class Version20240501051559_Combined extends AbstractMigration
                 reset_token_expires_at DATETIME DEFAULT NULL COMMENT \'(DC2Type:datetime_immutable)\', 
                 PRIMARY KEY(id)
             ) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
+
+            $this->addSql('INSERT INTO `users` (`id`, `username`, `password`, `email`, `nickname`, `reset_token`, `reset_token_expires_at`) VALUES (1, "markopolo", "zaq1@WSX", "markopolo@kanbala.com", "MarkoKurczePolo", NULL, NULL)');
+            $this->addSql('INSERT INTO `users` (`id`, `username`, `password`, `email`, `nickname`, `reset_token`, `reset_token_expires_at`) VALUES (2, "xxwojoxx", "zaq1@WSX", "xxwojoxx@kanbanal.com", "HighEloKoxWoj", NULL, NULL)');
         }
 
         if (!$schema->hasTable('board_members')) {
@@ -42,6 +45,8 @@ final class Version20240501051559_Combined extends AbstractMigration
                 INDEX IDX_DBEFAF0DDF9797C (board_id_id), 
                 PRIMARY KEY(id)
             ) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
+            $this->addSql('INSERT INTO `board_members` (`id`, `user_id_id`, `board_id_id`) VALUES (1, 1, 2)');
+            $this->addSql('INSERT INTO `board_members` (`id`, `user_id_id`, `board_id_id`) VALUES (2, 2, 1)');
         }
 
         if (!$schema->hasTable('boards')) {
@@ -53,6 +58,8 @@ final class Version20240501051559_Combined extends AbstractMigration
                 INDEX IDX_F3EE4D139D86650F (user_id_id), 
                 PRIMARY KEY(id)
             ) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
+            $this->addSql('INSERT INTO `boards` (`id`, `user_id_id`, `title`, `created_at`) VALUES (1, 2, "Kanbanal Project", "2024-05-08 10:37:21")');
+            $this->addSql('INSERT INTO `boards` (`id`, `user_id_id`, `title`, `created_at`) VALUES (2, 1, "Evil Kanbanal Project", "2024-05-08 10:43:42")');
         }
 
         if (!$schema->hasTable('chat_messages')) {
@@ -66,6 +73,9 @@ final class Version20240501051559_Combined extends AbstractMigration
                 INDEX IDX_EF20C9A69D86650F (user_id_id), 
                 PRIMARY KEY(id)
             ) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
+
+            $this->addSql('INSERT INTO `chat_messages` (`id`, `board_id_id`, `user_id_id`, `content`, `created_at`) VALUES (1, 2, 1, "Zly kanbanal jest jak, dzialam XD", "2024-05-08 11:44:42")');
+            $this->addSql('INSERT INTO `chat_messages` (`id`, `board_id_id`, `user_id_id`, `content`, `created_at`) VALUES (2, 1, 2, "Tutaj zaczyna sie moje imperium", "2024-05-08 11:21:37")');
         }
 
         if (!$schema->hasTable('tasks')) {
@@ -80,6 +90,8 @@ final class Version20240501051559_Combined extends AbstractMigration
                 INDEX IDX_50586597DDF9797C (board_id_id), 
                 PRIMARY KEY(id)
             ) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
+            $this->addSql('INSERT INTO `tasks` (`id`, `user_id_id`, `board_id_id`, `title`, `description`, `status`) VALUES (1, 1, 2, "Naprawic kanbanal", "No ogolnie to zrob tak zeby dzialalo", "completed")');
+            $this->addSql('INSERT INTO `tasks` (`id`, `user_id_id`, `board_id_id`, `title`, `description`, `status`) VALUES (2, 2, 1, "Naprawic kanbanal ale inny", "Klejone tasma ale jest", "in_progress")');
         }
 
         // Add foreign key constraints
