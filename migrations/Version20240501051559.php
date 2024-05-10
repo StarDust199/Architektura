@@ -77,7 +77,7 @@ final class Version20240501051559_Combined extends AbstractMigration
             $this->addSql('INSERT INTO `chat_messages` (`id`, `board_id_id`, `user_id_id`, `content`, `created_at`) VALUES (1, 2, 1, "Zly kanbanal jest jak, dzialam XD", "2024-05-08 11:44:42")');
             $this->addSql('INSERT INTO `chat_messages` (`id`, `board_id_id`, `user_id_id`, `content`, `created_at`) VALUES (2, 1, 2, "Tutaj zaczyna sie moje imperium", "2024-05-08 11:21:37")');
         }
-
+        //Status 1 - TODO, 2 - IN PROGRESS, 3 - DONE
         if (!$schema->hasTable('tasks')) {
             $this->addSql('CREATE TABLE tasks (
                 id INT AUTO_INCREMENT NOT NULL, 
@@ -85,13 +85,13 @@ final class Version20240501051559_Combined extends AbstractMigration
                 board_id_id INT DEFAULT NULL, 
                 title VARCHAR(255) NOT NULL, 
                 description TINYTEXT NOT NULL, 
-                status VARCHAR(255) NOT NULL, 
+                status INT NOT NULL, 
                 INDEX IDX_505865979D86650F (user_id_id), 
                 INDEX IDX_50586597DDF9797C (board_id_id), 
                 PRIMARY KEY(id)
             ) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
-            $this->addSql('INSERT INTO `tasks` (`id`, `user_id_id`, `board_id_id`, `title`, `description`, `status`) VALUES (1, 1, 2, "Naprawic kanbanal", "No ogolnie to zrob tak zeby dzialalo", "completed")');
-            $this->addSql('INSERT INTO `tasks` (`id`, `user_id_id`, `board_id_id`, `title`, `description`, `status`) VALUES (2, 2, 1, "Naprawic kanbanal ale inny", "Klejone tasma ale jest", "in_progress")');
+            $this->addSql('INSERT INTO `tasks` (`id`, `user_id_id`, `board_id_id`, `title`, `description`, `status`) VALUES (1, 1, 2, "Naprawic kanbanal", "No ogolnie to zrob tak zeby dzialalo", 3)');
+            $this->addSql('INSERT INTO `tasks` (`id`, `user_id_id`, `board_id_id`, `title`, `description`, `status`) VALUES (2, 2, 1, "Naprawic kanbanal ale inny", "Klejone tasma ale jest", 2)');
         }
 
         // Add foreign key constraints
