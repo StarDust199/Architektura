@@ -65,24 +65,34 @@ class UserController extends AbstractController
         $data = json_decode($request->getContent(), true);
 
         // Sprawdź, czy przesłane dane zawierają wymagane pola
-        if (!isset($data['username']) || !isset($data['email']) || !isset($data['nickname'])) {
+        if (!isset($data['username']) || !isset($data['email']) || !isset($data['nickname']) || !isset($data['password'])) {
             return new JsonResponse(['error' => 'Missing required fields'], JsonResponse::HTTP_BAD_REQUEST);
         }
-
-        // Stwórz nowego użytkownika na podstawie danych przesłanych w żądaniu
+        
         $user = new Users();
         $user->setUsername($data['username']);
         $user->setEmail($data['email']);
         $user->setNickname($data['nickname']);
         $encoded = password_hash($data['password'], PASSWORD_DEFAULT);
         $user->setPassword($encoded);
-        $user->setResetToken($data['reset_token']);
-        $user->setResetTokenExpiresAt($data['reset_token_expires_at']);
-
-        // Zapisz nowego użytkownika do bazy danych
+        
+        // Sprawdź, czy klucz reset_token istnieje w danych i ustaw go, jeśli istnieje
+        if (isset($data['reset_token'])) {
+            $user->setResetToken($data['reset_token']);
+        } else {
+            $user->setResetToken(null);
+        }
+        
+        // Sprawdź, czy klucz reset_token_expires_at istnieje w danych i ustaw go, jeśli istnieje
+        if (isset($data['reset_token_expires_at'])) {
+            $user->setResetTokenExpiresAt($data['reset_token_expires_at']);
+        } else {
+            $user->setResetTokenExpiresAt(null);
+        }
+        
         $this->entityManager->persist($user);
         $this->entityManager->flush();
-
+        
         return new JsonResponse(['message' => 'User added successfully'], JsonResponse::HTTP_CREATED);
     }
 
