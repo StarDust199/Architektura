@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\ChatMessages;
+use App\Entity\Users;
+use App\Entity\Boards;
 use App\Repository\ChatMessagesRepository;
 use Doctrine\ORM\EntityManagerInterface; // Add this line
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -66,13 +68,29 @@ class ChatController extends AbstractController
     {
         $data = json_decode($request->getContent(), true);
 
-        if (empty($data['message'])) {
-            return new JsonResponse(['error' => 'Message is required'], JsonResponse::HTTP_BAD_REQUEST);
+        if (empty($data['message']) || empty($data['user_id']) || empty($data['board_id'])) {
+            return new JsonResponse(['error' => 'Message, user_id, and board_id are required'], JsonResponse::HTTP_BAD_REQUEST);
+        }
+
+        // Pobierz encję użytkownika na podstawie user_id
+        $user = $this->entityManager->getRepository(Users::class)->find($data['user_id']);
+
+        if (!$user) {
+            return new JsonResponse(['error' => 'User not found'], JsonResponse::HTTP_NOT_FOUND);
+        }
+
+        // Pobierz encję tablicy na podstawie board_id
+        $board = $this->entityManager->getRepository(Boards::class)->find($data['board_id']);
+
+        if (!$board) {
+            return new JsonResponse(['error' => 'Board not found'], JsonResponse::HTTP_NOT_FOUND);
         }
 
         $chatMessage = new ChatMessages();
         $chatMessage->setContent($data['message']);
         $chatMessage->setCreatedAt(new \DateTimeImmutable());
+        $chatMessage->setUserId($user); // Ustaw użytkownika
+        $chatMessage->setBoardId($board); // Ustaw tablicę
 
         $this->entityManager->persist($chatMessage);
         $this->entityManager->flush();

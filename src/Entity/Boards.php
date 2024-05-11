@@ -27,19 +27,19 @@ class Boards
     /**
      * @var Collection<int, BoardMembers>
      */
-    #[ORM\OneToMany(targetEntity: BoardMembers::class, mappedBy: 'board_id')]
+    #[ORM\OneToMany(targetEntity: BoardMembers::class, mappedBy: 'board_id', cascade: ['remove'])]
     private Collection $boardMembers;
 
     /**
      * @var Collection<int, Tasks>
      */
-    #[ORM\OneToMany(targetEntity: Tasks::class, mappedBy: 'board_id')]
+    #[ORM\OneToMany(targetEntity: Tasks::class, mappedBy: 'board_id', cascade: ['remove'])]
     private Collection $tasks;
 
     /**
      * @var Collection<int, ChatMessages>
      */
-    #[ORM\OneToMany(targetEntity: ChatMessages::class, mappedBy: 'board_id')]
+    #[ORM\OneToMany(targetEntity: ChatMessages::class, mappedBy: 'board_id', cascade: ['remove'])]
     private Collection $chatMessages;
 
     public function __construct()

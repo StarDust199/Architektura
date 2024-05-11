@@ -36,25 +36,25 @@ class Users
     /**
      * @var Collection<int, Boards>
      */
-    #[ORM\OneToMany(targetEntity: Boards::class, mappedBy: 'user_id')]
+    #[ORM\OneToMany(targetEntity: Boards::class, mappedBy: 'user_id', cascade: ['remove'])]
     private Collection $boards;
 
     /**
      * @var Collection<int, BoardMembers>
      */
-    #[ORM\OneToMany(targetEntity: BoardMembers::class, mappedBy: 'user_id')]
+    #[ORM\OneToMany(targetEntity: BoardMembers::class, mappedBy: 'user_id', cascade: ['remove'])]
     private Collection $boardMembers;
 
     /**
      * @var Collection<int, Tasks>
      */
-    #[ORM\OneToMany(targetEntity: Tasks::class, mappedBy: 'user_id')]
+    #[ORM\OneToMany(targetEntity: Tasks::class, mappedBy: 'user_id', cascade: ['remove'])]
     private Collection $tasks;
 
     /**
      * @var Collection<int, ChatMessages>
      */
-    #[ORM\OneToMany(targetEntity: ChatMessages::class, mappedBy: 'user_id')]
+    #[ORM\OneToMany(targetEntity: ChatMessages::class, mappedBy: 'user_id', cascade: ['remove'])]
     private Collection $chatMessages;
 
     public function __construct()

@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Boards;
+use App\Entity\Users;
 use App\Repository\BoardsRepository;
 use Doctrine\ORM\EntityManagerInterface; // Add this line
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -58,13 +59,21 @@ class BoardController extends AbstractController
     {
         $data = json_decode($request->getContent(), true);
 
-        if (!isset($data['title'])) {
-            return new JsonResponse('Missing required data', JsonResponse::HTTP_BAD_REQUEST);
+        if (!isset($data['title']) || !isset($data['user_id'])) {
+            return new JsonResponse('Missing required data (title or user_id)', JsonResponse::HTTP_BAD_REQUEST);
+        }
+
+        // Pobierz encję użytkownika na podstawie user_id
+        $user = $this->entityManager->getRepository(Users::class)->find($data['user_id']);
+
+        if (!$user) {
+            return new JsonResponse(['error' => 'User not found'], JsonResponse::HTTP_NOT_FOUND);
         }
 
         $board = new Boards();
         $board->setTitle($data['title']);
         $board->setCreatedAt(new \DateTimeImmutable()); // Ustawienie aktualnej daty
+        $board->setUserId($user); // Ustaw użytkownika
 
         $this->entityManager->persist($board);
         $this->entityManager->flush();
