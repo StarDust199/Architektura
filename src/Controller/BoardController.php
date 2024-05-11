@@ -95,4 +95,38 @@ class BoardController extends AbstractController
 
         return new JsonResponse(['message' => 'Board deleted successfully'], Response::HTTP_OK);
     }
+
+    #[Route('/{id}/members', name: 'board_members', methods: ['GET'])]
+    public function members(Boards $board): JsonResponse
+    {
+        $members = $board->getBoardMembers();
+        $data = [];
+
+        foreach ($members as $member) {
+            $data[] = [
+                'id' => $member->getId(),
+                'user_id' => $member->getUserId() ? $member->getUserId()->getId() : null,
+            ];
+        }
+
+        return new JsonResponse($data, JsonResponse::HTTP_OK);
+    }
+
+    #[Route('/{id}/messages', name: 'board_messages', methods: ['GET'])]
+    public function getMessages(Boards $board): JsonResponse
+    {
+        $messages = $board->getChatMessages();
+        $data = [];
+
+        foreach ($messages as $message) {
+            $data[] = [
+                'id' => $message->getId(),
+                'content' => $message->getContent(),
+                'created_at' => $message->getCreatedAt(),
+                'user_id' => $message->getUserId() ? $message->getUserId()->getId() : null,
+            ];
+        }
+
+        return new JsonResponse($data, JsonResponse::HTTP_OK);
+    }
 }

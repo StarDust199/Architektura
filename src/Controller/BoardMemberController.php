@@ -107,4 +107,26 @@ class BoardMemberController extends AbstractController
 
         return new JsonResponse(['status' => 'Board member deleted'], JsonResponse::HTTP_OK);
     }
+
+    #[Route('/join', name: 'board_member_join', methods: ['POST'])]
+    public function joinTable (Request $request, UsersRepository $usersRepository, BoardsRepository $boardsRepository): JsonResponse
+    {
+        $data = json_decode($request->getContent(), true);
+
+        $user = $usersRepository->find($data['user_id']);
+        $board = $boardsRepository->find($data['board_id']);
+
+        if (!$user || !$board) {
+            return new JsonResponse(['error' => 'User or board not found'], JsonResponse::HTTP_NOT_FOUND);
+        }
+
+        $board_member = new BoardMembers();
+        $board_member->setUserId($user);
+        $board_member->setBoardId($board);
+
+        $this->entityManager->persist($board_member);
+        $this->entityManager->flush();
+
+        return new JsonResponse(['status' => 'User joined board'], JsonResponse::HTTP_CREATED);
+    }
 }
