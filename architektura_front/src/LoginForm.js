@@ -7,7 +7,7 @@ const LoginForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch('http://localhost:8001/users/login', {
+      const response = await fetch('http://localhost:8000/users/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

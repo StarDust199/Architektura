@@ -9,7 +9,7 @@ const RegistrationForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch('http://localhost:8001/users/', {
+      const response = await fetch('http://localhost:8000/users/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
