@@ -4,6 +4,7 @@ Wszystkie pobrania i instalacje robić w domyślnych ścieżkach
 1. Pobrać scoop komendą w powershell
 
   Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+  
   Invoke-RestMethod -Uri https://get.scoop.sh | Invoke-Expression
 
 3. Pobrać composer
